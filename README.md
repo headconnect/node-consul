@@ -806,6 +806,7 @@ Result
 
  * [fire](#event-fire)
  * [list](#event-list)
+ * [watch](#event-watch)
 
 <a name="event-fire"/>
 ### consul.event.fire(options, callback)
@@ -861,6 +862,54 @@ consul.event.list('deploy', function(err, result) {
 ```
 
 Result
+
+``` json
+[
+  {
+    "ID": "4730953b-3135-7ff2-47a7-9d9fc9c4e5a2",
+    "Name": "deploy",
+    "Payload": "53",
+    "NodeFilter": "",
+    "ServiceFilter": "",
+    "TagFilter": "",
+    "Version": 1,
+    "LTime": 2
+  }
+]
+```
+
+<a name="event-watch"/>
+### consul.event.watch([options])
+
+Returns an event-emitter to watch for all or specific events (from the time of instantiation)
+
+Options
+
+ * event (String, optional): filter by event name (default: none)
+ * decodePayload (Boolean, optional): Base64Decode the Payload (default: true)
+
+Usage
+
+Will emit the 'event' message whenever a new event is registered with the agent matching the 
+
+``` javascript
+// watches for 'deploy' events:
+consul.event.watch('deploy').on('event', function(err, results) {
+    if (err) throw err;
+    console.log(results)
+});
+
+// watches for any event:
+var allEvents = consul.event.watch();
+
+allEvents.on('event', function(err, results) {
+    if (err) throw err;
+    console.log(results)
+});
+```
+
+Result
+Array of JSON (same as event.list)
 
 ``` json
 [
