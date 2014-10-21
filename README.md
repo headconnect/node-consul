@@ -890,7 +890,7 @@ Options
 
 Usage
 
-Will emit the 'event' message whenever a new event is registered with the agent matching the 
+Will emit the 'event' message whenever a new event is registered with the agent matching the filter (or any event if not specified)
 
 ``` javascript
 // watches for 'deploy' events:
@@ -902,17 +902,17 @@ consul.event.watch('deploy').on('event', function(err, results) {
 // watches for any event:
 var allEvents = consul.event.watch();
 
-allEvents.on('event', function(err, results) {
+allEvents.on('event', function(err, event) {
     if (err) throw err;
-    console.log(results)
+    console.log(event)
 });
 ```
 
 Result
-Array of JSON (same as event.list)
+Single JSON (same as event.list content structure)
 
 ``` json
-[
+
   {
     "ID": "4730953b-3135-7ff2-47a7-9d9fc9c4e5a2",
     "Name": "deploy",
@@ -923,7 +923,7 @@ Array of JSON (same as event.list)
     "Version": 1,
     "LTime": 2
   }
-]
+
 ```
 
 <a name="health"/>
